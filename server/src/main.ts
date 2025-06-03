@@ -23,5 +23,6 @@ app
 const sayWelcome: RequestHandler = (req, res) => {
   res.send("Welcome to Wild Series !");
 };
+
 // ...
 app.get("/", sayWelcome);
