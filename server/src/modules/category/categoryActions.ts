@@ -1,4 +1,10 @@
 // Import access to data
+<<<<<<< HEAD
+=======
+import categoryRepository from "./categoryRepository";
+
+// Some data to make the trick
+>>>>>>> d81c3994187bda6b28d3b5e0eb2a6bb5fd2d975d
 
 import categoryRepository from "./categoryRepository";
 
@@ -6,6 +12,7 @@ import categoryRepository from "./categoryRepository";
 
 import type { RequestHandler } from "express";
 
+<<<<<<< HEAD
 const browse: RequestHandler = async (req, res, next) => {
   try {
     // Fetch all categories
@@ -17,6 +24,11 @@ const browse: RequestHandler = async (req, res, next) => {
     // Pass any errors to the error-handling middleware
     next(err);
   }
+=======
+const browse: RequestHandler = async (req, res) => {
+  const categoriesFromDB = await categoryRepository.readAll();
+  res.json(categoriesFromDB);
+>>>>>>> d81c3994187bda6b28d3b5e0eb2a6bb5fd2d975d
 };
 
 const read: RequestHandler = async (req, res, next) => {
@@ -117,6 +129,7 @@ if (name == null) {
   } else {
     res.status(400).json({ validationErrors: errors });
   }
+<<<<<<< HEAD
 
 
 
@@ -127,3 +140,11 @@ if (name == null) {
 // Export them to import them somewhere else
 
 export default { browse, read, edit, add, destroy, validate };
+=======
+};
+export default {
+  browse,
+  read,
+  /* Here you export */
+};
+>>>>>>> d81c3994187bda6b28d3b5e0eb2a6bb5fd2d975d

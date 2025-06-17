@@ -3,8 +3,13 @@ import { title } from "node:process";
 import programRepository from "./programRepository";
 
 // Some data to make the trick
+<<<<<<< HEAD
 
 const programs = [
+=======
+import ProgramRepository from "./ProgramRepository";
+export const programs = [
+>>>>>>> d81c3994187bda6b28d3b5e0eb2a6bb5fd2d975d
   {
     id: 1,
     title: "The Good Place",
@@ -31,6 +36,7 @@ const programs = [
 
 import type { RequestHandler } from "express";
 
+<<<<<<< HEAD
 
 
 const browse: RequestHandler = async (req, res, next) => {
@@ -44,6 +50,12 @@ const browse: RequestHandler = async (req, res, next) => {
     // Pass any errors to the error-handling middleware
     next(err);
   }
+=======
+const browse: RequestHandler = async (_req, res) => {
+  const programsFromDB = await ProgramRepository.readAll();
+
+  res.json(programsFromDB);
+>>>>>>> d81c3994187bda6b28d3b5e0eb2a6bb5fd2d975d
 };
 
 const read: RequestHandler = async (req, res, next) => {

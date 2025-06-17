@@ -8,6 +8,7 @@ type Category = {
 };
 
 class CategoryRepository {
+<<<<<<< HEAD
   async create(category: Omit<Category, "id">) {
     // Execute the SQL INSERT query to add a new category to the "category" table
     const [result] = await databaseClient.query<Result>(
@@ -45,6 +46,8 @@ class CategoryRepository {
     return rows[0] as Category;
   }
 
+=======
+>>>>>>> d81c3994187bda6b28d3b5e0eb2a6bb5fd2d975d
   async readAll() {
     // Execute the SQL SELECT query to retrieve all categories from the "category" table
     const [rows] = await databaseClient.query<Rows>("select * from category");
@@ -52,6 +55,7 @@ class CategoryRepository {
     // Return the array of categories
     return rows as Category[];
   }
+<<<<<<< HEAD
 
   async update(category: Category) {
     // Execute the SQL UPDATE query to update an existing category in the "category" table
@@ -74,6 +78,8 @@ class CategoryRepository {
     // Return how many rows were affected
     return result.affectedRows;
   }
+=======
+>>>>>>> d81c3994187bda6b28d3b5e0eb2a6bb5fd2d975d
 }
 
 export default new CategoryRepository();

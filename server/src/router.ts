@@ -16,6 +16,7 @@ router.post("/api/items", itemActions.add);
 // Define program-related routes
 import programActions from "./modules/program/programActions";
 
+<<<<<<< HEAD
 router.get("/api/program", programActions.browse);
 router.get("/api/program/:id", programActions.read);
 router.put(
@@ -42,8 +43,19 @@ router.delete("/api/categories/:id", categoryActions.destroy);
 /* ************************************************************************* */
 // Define category-related routes
 
+=======
+router.get("/api/programs", programActions.browse);
+router.get("/api/programs/:id", programActions.read);
+router.get("/api/categories", categoryActions.browse);
+router.get("/api/categories/:id", categoryActions.read);
+/* ************************************************************************* */
+>>>>>>> d81c3994187bda6b28d3b5e0eb2a6bb5fd2d975d
 
 
+<<<<<<< HEAD
+=======
+import categoryActions from "./modules/category/categoryActions";
+>>>>>>> d81c3994187bda6b28d3b5e0eb2a6bb5fd2d975d
 import sayActions from "./modules/say/sayActions";
 
 router.get("/", sayActions.sayWelcome);
