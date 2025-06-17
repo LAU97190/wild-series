@@ -1,5 +1,3 @@
-// Declare the action
-
 import type { RequestHandler } from "express";
 
 const sayWelcome: RequestHandler = (req, res) => {

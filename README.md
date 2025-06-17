@@ -1,6 +1,6 @@
 # wild-series
 
-Ce projet est un monorepo JS, suivant l'architecture React-Express-MySQL telle qu'enseignée à la Wild Code School (v7.2.4) :
+Ce projet est un monorepo JS, suivant l'architecture React-Express-MySQL telle qu'enseignée à la Wild Code School (v7.1.7) :
 
 ```mermaid
 sequenceDiagram
@@ -37,6 +37,7 @@ sequenceDiagram
 Il est pré-configuré avec un ensemble d'outils pour aider les étudiants à produire du code de qualité industrielle, tout en restant un outil pédagogique :
 
 - **Concurrently** : Permet d'exécuter plusieurs commandes simultanément dans le même terminal.
+- **Husky** : Permet d'exécuter des commandes spécifiques déclenchées par des événements _git_.
 - **Vite** : Alternative à _Create-React-App_, offrant une expérience plus fluide avec moins d'outils.
 - **Biome** : Alternative à _ESlint_ et _Prettier_, assurant la qualité du code selon des règles choisies.
 - **Supertest** : Bibliothèque pour tester les serveurs HTTP en node.js.
@@ -45,6 +46,7 @@ Il est pré-configuré avec un ensemble d'outils pour aider les étudiants à pr
 
 - [wild-series](#name)
   - [Table des Matières](#table-des-matières)
+  - [Utilisateurs Windows](#utilisateurs-windows)
   - [Installation \& Utilisation](#installation--utilisation)
   - [Les choses à retenir](#les-choses-à-retenir)
     - [Commandes de Base](#commandes-de-base)
@@ -54,14 +56,19 @@ Il est pré-configuré avec un ensemble d'outils pour aider les étudiants à pr
     - [REST](#rest)
     - [Autres Bonnes Pratiques](#autres-bonnes-pratiques)
   - [FAQ](#faq)
-    - [Installation avec Docker](#installation-avec-docker)
-      - [Mode développement](#mode-développement)
-      - [Installation de nouvelles dépendances](#installation-de-nouvelles-dépendances)
-      - [Accéder à la base de données](#accéder-à-la-base-de-données)
     - [Déploiement avec Traefik](#déploiement-avec-traefik)
     - [Variables d'environnement spécifiques](#variables-denvironnement-spécifiques)
     - [Logs](#logs)
     - [Contribution](#contribution)
+
+## Utilisateurs Windows
+
+Assurez-vous de lancer ces commandes dans un terminal Git pour éviter [les problèmes de formats de nouvelles lignes](https://en.wikipedia.org/wiki/Newline#Issues_with_different_newline_formats) :
+
+```sh
+git config --global core.eol lf
+git config --global core.autocrlf false
+```
 
 ## Installation & Utilisation
 
@@ -306,38 +313,6 @@ declare global {
 
 ## FAQ
 
-### Installation avec Docker
-> ⚠️ Prérequis : Vous devez avoir installé Docker et Docker Compose sur votre machine.  
-> Suivez les instructions ici : [Docker Installation](https://docs.docker.com/get-docker/).
-
-Lorsque Docker est installé et démarré, exécutez la commande suivante pour construire l'image Docker et démarrer les conteneurs :
-```bash
-docker compose up -d --build
-```
-La partie _client_ de l'application sera accessible à l'adresse http://localhost:3000 et la partie _serveur_ à l'adresse http://localhost:3310.  
-Pour arrêter et supprimer les conteneurs, exécutez :
-```bash
-docker compose down
-```
-
-#### Mode développement
-Les dépendances (du dossier `node_modules`) sont installées dans le conteneur Docker et ne seront pas visibles directement. Si vous utilisez un IDE comme VSCode et que vous souhaitez modifier des fichiers de votre application, vous devez installer les dépendances localement pour prévenir toute erreur de fichiers manquants.  
-```bash
-npm install
-```
-
-#### Installation de nouvelles dépendances
-Pour installer de nouvelles dépendances, procédez en local comme d'habitude avec `npm install <package-name>`, puis, synchronisez les dépendances dans le conteneur Docker avec la commande suivante :
-```bash
-docker compose exec web sh -c "npm install"
-```
-
-#### Accéder à la base de données
-Pour vous connecter à la base de données avec votre terminal, exécutez la commande suivante :
-```bash
-docker compose exec database sh -c "mysql -uuser -ppassword js_template_fullstack"
-```
-
 ### Déploiement avec Traefik
 
 > ⚠️ Prérequis : Vous devez avoir installé et configuré Traefik sur votre VPS au préalable. Suivez les instructions ici : [VPS Traefik Starter Kit](https://github.com/WildCodeSchool/vps-traefik-starter-kit/).
@@ -389,4 +364,3 @@ Nous accueillons avec plaisir les contributions ! Veuillez suivre ces étapes po
 - Assurez-vous que votre code respecte les standards de codage en exécutant `npm run check` avant de pousser vos modifications.
 - Ajoutez des tests pour toute nouvelle fonctionnalité ou correction de bug.
 - Documentez clairement vos modifications dans la description de la pull request.
-# wild-series

@@ -8,6 +8,46 @@ type Category = {
 };
 
 class CategoryRepository {
+<<<<<<< HEAD
+  async create(category: Omit<Category, "id">) {
+    // Execute the SQL INSERT query to add a new category to the "category" table
+    const [result] = await databaseClient.query<Result>(
+      "insert into category (name) values (tilte, synopsis, poster, country, year,category_id) values (?)",
+      [category.name],
+    );
+
+    // Return the ID of the newly inserted item
+    return result.insertId;
+  }
+
+  async read(id: number) {
+    // Execute the SQL SELECT query to retrieve a specific category by its ID
+   const [rows] = await databaseClient.query<Rows>(
+      `
+      select 
+        category.*, 
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            "id", program.id, "title", program.title
+          )
+        ) as programs 
+      from 
+        category 
+        left join program on program.category_id = category.id 
+      where 
+        category.id = ? 
+      group by 
+        category.id
+      `,
+      [id],
+    );
+
+    // Return the first row of the result, which represents the category
+    return rows[0] as Category;
+  }
+
+=======
+>>>>>>> d81c3994187bda6b28d3b5e0eb2a6bb5fd2d975d
   async readAll() {
     // Execute the SQL SELECT query to retrieve all categories from the "category" table
     const [rows] = await databaseClient.query<Rows>("select * from category");
@@ -15,6 +55,31 @@ class CategoryRepository {
     // Return the array of categories
     return rows as Category[];
   }
+<<<<<<< HEAD
+
+  async update(category: Category) {
+    // Execute the SQL UPDATE query to update an existing category in the "category" table
+    const [result] = await databaseClient.query<Result>(
+      "update category set name = ? where id = ?",
+      [category.name, category.id],
+    );
+
+    // Return how many rows were affected
+    return result.affectedRows;
+  }
+
+  async delete(id: number) {
+    // Execute the SQL DELETE query to delete an existing category from the "category" table
+    const [result] = await databaseClient.query<Result>(
+      "delete from category where id = ?",
+      [id],
+    );
+
+    // Return how many rows were affected
+    return result.affectedRows;
+  }
+=======
+>>>>>>> d81c3994187bda6b28d3b5e0eb2a6bb5fd2d975d
 }
 
 export default new CategoryRepository();
