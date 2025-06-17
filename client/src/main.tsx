@@ -1,19 +1,24 @@
 // Import necessary modules from React and React Router
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { RouterProvider, createBrowserRouter } from "react-router";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 /* ************************************************************************* */
 
 // Import the main app component
 import App from "./App";
-import Programs from "./pages/programs";
 
 // Import additional components for new routes
-// Try creating these components in the "pages" folder
 
-// import About from "./pages/About";
-// import Contact from "./pages/Contact";
+import CategoryDetail from "./pages/CategoryDetail";
+import CategoryEdit from "./pages/CategoryEdit";
+import CategoryIndex from "./pages/CategoryIndex";
+import CategoryNew from "./pages/CategoryNew";
+
+import ProgramDetail from "./pages/ProgramDetail";
+import ProgramEdit from "./pages/ProgramEdit ";
+import ProgramIndex from "./pages/ProgramIndex";
+import ProgramNew from "./pages/ProgramNew";
 
 /* ************************************************************************* */
 
@@ -23,11 +28,40 @@ const router = createBrowserRouter([
   {
     path: "/", // The root path
     element: <App />, // Renders the App component for the home page
-  },
-  // Try adding a new route! For example, "/about" with an About component
-  {
-    path: "/programs", // The root path
-    element: <Programs />, // Renders the App component for the home page
+    children: [
+      {
+        path: "/categories",
+        element: <CategoryIndex />,
+      },
+      {
+        path: "/categories/new",
+        element: <CategoryNew />,
+      },
+      {
+        path: "/categories/:id",
+        element: <CategoryDetail />,
+      },
+      {
+        path: "/categories/:id/edit",
+        element: <CategoryEdit />,
+      },
+      {
+        path: "/programs",
+        element: <ProgramIndex />,
+      },
+      {
+        path: "/programs/new",
+        element: <ProgramNew />,
+      },
+      {
+        path: "/program/:id",
+        element: <ProgramDetail />,
+      },
+      {
+        path: "/program/:id/edit",
+        element: <ProgramEdit />,
+      },
+    ],
   },
 ]);
 
@@ -43,7 +77,7 @@ if (rootElement == null) {
 createRoot(rootElement).render(
   <StrictMode>
     <RouterProvider router={router} />
-  </StrictMode>
+  </StrictMode>,
 );
 
 /**

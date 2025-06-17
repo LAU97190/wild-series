@@ -4,11 +4,11 @@ services:
   web:
     build: .
     volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
+      - .:/var/www
+      - ./docker-entry.sh:/etc/entrypoint.sh
+    entrypoint: [ "sh", "/etc/entrypoint.sh" ]
     ports:
       - "3310:3310"
-      - "3000:3000"
     environment:
       APP_PORT: 3310
       APP_SECRET: 123456789
@@ -17,8 +17,7 @@ services:
       DB_USER: user
       DB_PASSWORD: password
       DB_NAME: js_template_fullstack
-      VITE_API_URL: "http://localhost:3310"
-    command: sh -c "npm run dev"
+      VITE_API_URL: ""
     depends_on:
       database:
         condition: service_healthy

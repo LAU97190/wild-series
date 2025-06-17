@@ -1,6 +1,10 @@
+// Import access to data
+import { title } from "node:process";
+import programRepository from "./programRepository";
+
 // Some data to make the trick
 
-export const programs = [
+const programs = [
   {
     id: 1,
     title: "The Good Place",
@@ -23,38 +27,129 @@ export const programs = [
   },
 ];
 
-// Declare the action
+// Declare the actions
 
 import type { RequestHandler } from "express";
 
-const browse: RequestHandler = (req, res) => {
-  if (req.query.q != null) {
-    const filteredPrograms = programs.filter((program) =>
-      program.synopsis.includes(req.query.q as string)
-    );
 
-    res.json(filteredPrograms);
-  } else {
-    res.json(programs);
+
+const browse: RequestHandler = async (req, res, next) => {
+  try {
+    // Fetch all items
+    const programsFromDB = await programRepository.readAll();
+
+    // Respond with the items in JSON format
+    res.json(programsFromDB);
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    next(err);
   }
 };
 
-//*****************************************************
-
-const read: RequestHandler = (req, res) => {
+const read: RequestHandler = async (req, res, next) => {
   const parsedId = Number.parseInt(req.params.id);
-
-  const program = programs.find((p) => p.id === parsedId);
+  const program = await programRepository.read(parsedId);
 
   if (program != null) {
     res.json(program);
   } else {
-    res.sendStatus(404);
+    res.sendStatus(404); // important si pas trouvé
   }
 };
 
-//*****************************************************
 
-// Export it to import it somewhere else
 
-export default { browse, read };
+
+const edit: RequestHandler = async (req, res, next) => {
+  try {
+    const program = {
+      id: Number(req.params.id),
+      title: req.body.title,
+      synopsis: req.body.synopsis,
+      poster: req.body.poster,
+      country: req.body.country,
+      year: Number(req.body.year),
+      category_id: Number(req.body.category_id),
+    };
+
+
+    const affectedRows = await programRepository.update(program);
+
+    // If the category is not found, respond with HTTP 404 (Not Found)
+    // Otherwise, respond with the category in JSON format
+    if (affectedRows === 0) {
+      res.sendStatus(404);
+    } else {
+      res.sendStatus(204);
+    }
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    next(err);
+  }
+};
+
+const add: RequestHandler = async (req, res, next) => {
+  try {
+    const newProgram = {
+      title: req.body.title,
+      synopsis: req.body.synopsis,
+      poster: req.body.poster,
+      country: req.body.country,
+      year: Number(req.body.year),
+      category_id: Number(req.body.category_id),
+    };
+
+    // Create the category
+    const insertId = await programRepository.create(newProgram);
+
+    // Respond with HTTP 201 (Created) and the ID of the newly inserted item
+    res.status(201).json({ insertId });
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    next(err);
+  }
+};
+
+const destroy: RequestHandler = async (req, res, next) => {
+  try {
+    // Delete a specific category based on the provided ID
+    const programId = Number(req.params.id);
+
+    await programRepository.delete(programId);
+
+    // Respond with HTTP 204 (No Content) anyway
+    res.sendStatus(204);
+  } catch (err) {
+    // Pass any errors to the error-handling middleware
+    next(err);
+  }
+};
+
+// ...
+
+const validate: RequestHandler = (req, res, next) => {
+  type ValidationError = {
+    field: string;
+    message: string;
+  };
+
+  const errors: ValidationError[] = [];
+
+  const { title } = req.body;
+if (title == null) {
+  errors.push({ field: "tilte", message: "The field is required" });
+}
+
+
+  // put your validation rules here
+
+  if (errors.length === 0) {
+    next();
+  } else {
+    res.status(400).json({ validationErrors: errors });
+  }
+};
+
+// Export them to import them somewhere else
+
+export default { browse, read, edit, add, destroy, validate };
